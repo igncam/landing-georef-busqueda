@@ -18,7 +18,7 @@ buscarButton.disabled = true;
 
 entidadSelect.addEventListener('change', (e) => {
 	loadSelect(provinciaSelect, getProvincias());
-
+	resetSelects([municipioSelect, departamentoSelect, localidadSelect]);
 	switch (e.target.value) {
 		case 'provincias':
 			provinciaSelect.disabled = false;
@@ -69,6 +69,8 @@ entidadSelect.addEventListener('change', (e) => {
 
 provinciaSelect.addEventListener('change', (e) => {
 	// si es completo no ejecuto la llamda a la api
+	resetSelects([municipioSelect, departamentoSelect, localidadSelect]);
+
 	if (e.target.value != 'completo') {
 		getDepartamentosByIdProvincia(e.target.value).then((resp) =>
 			loadSelect(departamentoSelect, resp)
@@ -115,4 +117,17 @@ const loadSelect = (selectElement, data) => {
 	allDefaultSelect.defaultSelected = true;
 	allDefaultSelect.innerHTML = 'Completo';
 	selectElement.appendChild(allDefaultSelect);
+};
+
+const resetSelects = (selectElements) => {
+	for (const e of selectElements) {
+		e.innerHTML = '';
+		const allDefaultSelect = document.createElement('option');
+		allDefaultSelect.value = 'completo';
+		allDefaultSelect.defaultSelected = true;
+		allDefaultSelect.innerHTML = 'Completo';
+		e.appendChild(allDefaultSelect);
+	}
+
+	console.log('Se resetearon los selects');
 };
