@@ -1,6 +1,5 @@
 const URL_API = 'https://apis.datos.gob.ar/georef/api';
 
-// obtiene provincias con id y nombre
 const getProvincias = () => {
 	const provincias = [
 		{
@@ -121,7 +120,6 @@ const getMunicipiosByIdProvincia = async (idProv) => {
 	return jsonData.municipios;
 };
 
-// TODO: asentamientos - si consulta calles tiene que ir a localidades censales
 const getLocalidades = async (idProv, idDep, idMun) => {
 	const resp = await fetch(
 		`${URL_API}/localidades?provincia=${idProv}&departamento=${idDep}&municipio=${idMun}&campos=id,nombre&orden=nombre&max=200`
