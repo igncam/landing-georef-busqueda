@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+
+<head>
+  <link rel="profile" href="http://www.w3.org/1999/xhtml/vocab" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+    integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet"
+    href="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/css/icono-arg.css">
+  <!-- /Base -->
+  <link rel="stylesheet"
+    href="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/css/poncho.min.css" />
+  <title>Tabla vialidad</title>
+  <style>
+    body {
+      padding: 2em;
+    }
+  </style>
+</head>
+
+<body class=" p-t-3">
+  <h1>Landing busqueda</h1>
+  <!-- INCLUDE SCRIPTS -->
+  <link href="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/css/ponchoTable-1.1.css"
+    rel="stylesheet">
+  <script src="https://www.argentina.gob.ar/sites/default/files/ponchotable/showdown.js"></script>
+  <script
+    src="https://www.argentina.gob.ar/profiles/argentinagobar/themes/argentinagobar/argentinagobar_theme/js/extensiones/showdown-extensions.js"></script>
+  <script
+    src="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/js/datatables.min.js"></script>
+  <script src="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/js/intl.min.js"></script>
+  <script src="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/js/poncho.min.js"></script>
+  <!-- / INCLUDE SCRIPTS -->
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="col-md-6 form-group item-form">
+          <label for="entidadSelect">En</label>
+          <select class="form-control" name="entidadSelect" id="entidadSelect">
+            <option value="select" selected="">Seleccioná una entidad</option>
+            <option value="provincias">Provincias</option>
+            <option value="departamentos">Departamentos</option>
+            <option value="municipios">Municipios</option>
+            <option value="localidades">Localidades</option>
+            <option value="calles">calles</option>
+          </select>
+          <p class="help-block error hidden">Ingresá un Municipio</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-3 form-group item-form">
+          <label for="provinciaSelect">Provincia</label>
+          <select class="form-control" name="provinciaSelect" id="provinciaSelect">
+            <option value="" selected="">Seleccioná una provincia</option>
+          </select>
+          <p class="help-block error hidden">Ingresá una Provincia</p>
+        </div>
+        <div class="col-md-3 form-group item-form">
+          <label for="departamentoSelect">Departamento</label>
+          <select class="form-control" name="departamentoSelect" id="departamentoSelect">
+            <option value="" selected="">Seleccioná un Departamento</option>
+          </select>
+          <p class="help-block error hidden">Ingresá un departamento</p>
+        </div>
+        <div class="col-md-3 form-group item-form">
+          <label for="municipioSelect">Municipio</label>
+          <select class="form-control" name="municipioSelect" id="municipioSelect">
+            <option value="" selected="">Seleccioná un Municipio</option>
+          </select>
+          <p class="help-block error hidden">Ingresá un municipio</p>
+        </div>
+        <div class="col-md-3 form-group item-form">
+          <label for="localidadSelect">Localidad</label>
+          <select class="form-control" name="localidadSelect" id="localidadSelect">
+            <option value="" selected="">Seleccioná una localidad</option>
+          </select>
+          <p class="help-block error hidden">Ingresá una localidad</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 form-group item-form">
+      <label for="buscar">Buscar</label>
+
+      <div class="row">
+        <div class="col-md-8">
+          <input type="search" class="form-control" id="buscarInput" required="" aria-required="true">
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-primary btn-block" id="buscarButton"> Buscar </button>
+        </div>
+      </div>
+
+      <p class="help-block error hidden">Ingresá una palabra para buscar</p>
+    </div>
+  </div>
+
+  <!-- Georef -->
+  <script src="/assets/js/georef.js"></script>
+  <script src="/assets/js/formgeoref.js"></script>
+  <!-- / Georef -->
+</body>
+
+</html>
