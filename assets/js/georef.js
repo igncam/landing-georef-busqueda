@@ -118,6 +118,8 @@ const getDepartamentosByIdProvincia = async (idProv, opt) => {
 };
 // TODO: arreglar interseccion
 
+// TODO: si se envia buenos aires [] buscar por id y no interseccion y bloquar select dep
+
 const getMunicipiosByIdProvincia = async (idDep, opt) => {
 	const max = opt?.max || 300;
 	const campos = opt?.campos || ['id', 'nombre'];

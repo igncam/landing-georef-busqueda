@@ -21,7 +21,7 @@ entidadSelect.addEventListener('change', (e) => {
 	resetSelects([municipioSelect, departamentoSelect, localidadSelect]);
 	switch (e.target.value) {
 		case 'provincias':
-			provinciaSelect.disabled = false;
+			provinciaSelect.disabled = true;
 			departamentoSelect.disabled = true;
 			municipioSelect.disabled = true;
 			localidadSelect.disabled = true;
@@ -32,7 +32,7 @@ entidadSelect.addEventListener('change', (e) => {
 		case 'departamentos':
 			provinciaSelect.disabled = false;
 			municipioSelect.disabled = true;
-			departamentoSelect.disabled = false;
+			departamentoSelect.disabled = true;
 			localidadSelect.disabled = true;
 			buscarInput.disabled = true;
 			buscarButton.disabled = false;
@@ -41,7 +41,7 @@ entidadSelect.addEventListener('change', (e) => {
 		case 'municipios':
 			provinciaSelect.disabled = false;
 			departamentoSelect.disabled = false;
-			municipioSelect.disabled = false;
+			municipioSelect.disabled = true;
 			localidadSelect.disabled = true;
 			buscarInput.disabled = true;
 			buscarButton.disabled = false;
