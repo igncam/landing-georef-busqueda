@@ -1,6 +1,8 @@
 const URL_API = 'https://apis.datos.gob.ar/georef/api';
 
-const getProvincias = () => {
+const getProvincias = (opt) => {
+	const max = opt?.max;
+
 	const provincias = [
 		{
 			id: '06',
@@ -100,29 +102,37 @@ const getProvincias = () => {
 		},
 	];
 
-	return provincias;
+	return provincias.slice(0, max ?? provincias.length);
 };
 
-const getDepartamentosByIdProvincia = async (idProv) => {
+const getDepartamentosByIdProvincia = async (idProv, opt) => {
+	const max = opt?.max || 200;
+	const campos = opt?.campos || ['id', 'nombre'];
+
 	const resp = await fetch(
-		`${URL_API}/departamentos?provincia=${idProv}&campos=id,nombre&max=200&orden=nombre`
+		`${URL_API}/departamentos?provincia=${idProv}&campos=${campos}&max=${max}&orden=nombre&aplanar=true`
 	);
 	const jsonData = await resp.json();
 
 	return jsonData.departamentos;
 };
+// TODO: arreglar interseccion
 
-const getMunicipiosByIdProvincia = async (idProv) => {
+const getMunicipiosByIdProvincia = async (idDep, opt) => {
+	const max = opt?.max || 300;
+	const campos = opt?.campos || ['id', 'nombre'];
 	const resp = await fetch(
-		`${URL_API}/municipios?provincia=${idProv}&campos=id,nombre&orden=nombre&max=200`
+		`${URL_API}/municipios?interseccion=departamento:${idDep}&campos=${campos}&orden=nombre&max=${max}&aplanar=true`
 	);
 	const jsonData = await resp.json();
 	return jsonData.municipios;
 };
 
-const getLocalidades = async (idProv, idDep, idMun) => {
+const getLocalidades = async (idProv, idDep, idMun, opt) => {
+	const max = opt?.max || 300;
+	const campos = opt?.campos || ['id', 'nombre'];
 	const resp = await fetch(
-		`${URL_API}/localidades?provincia=${idProv}&departamento=${idDep}&municipio=${idMun}&campos=id,nombre&orden=nombre&max=200`
+		`${URL_API}/localidades?provincia=${idProv}&departamento=${idDep}&municipio=${idMun}&campos=${campos}&orden=nombre&max=${max}&aplanar=true`
 	);
 	const jsonData = await resp.json();
 	return jsonData.localidades;

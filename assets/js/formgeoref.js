@@ -25,7 +25,7 @@ entidadSelect.addEventListener('change', (e) => {
 			departamentoSelect.disabled = true;
 			municipioSelect.disabled = true;
 			localidadSelect.disabled = true;
-			buscarInput.disabled = false;
+			buscarInput.disabled = true;
 			buscarButton.disabled = false;
 			break;
 
@@ -34,7 +34,7 @@ entidadSelect.addEventListener('change', (e) => {
 			municipioSelect.disabled = true;
 			departamentoSelect.disabled = false;
 			localidadSelect.disabled = true;
-			buscarInput.disabled = false;
+			buscarInput.disabled = true;
 			buscarButton.disabled = false;
 			break;
 
@@ -43,7 +43,7 @@ entidadSelect.addEventListener('change', (e) => {
 			departamentoSelect.disabled = false;
 			municipioSelect.disabled = false;
 			localidadSelect.disabled = true;
-			buscarInput.disabled = false;
+			buscarInput.disabled = true;
 			buscarButton.disabled = false;
 			break;
 
@@ -56,12 +56,21 @@ entidadSelect.addEventListener('change', (e) => {
 			buscarButton.disabled = true;
 			break;
 
-		default:
+		case 'calles':
 			provinciaSelect.disabled = false;
 			departamentoSelect.disabled = false;
 			municipioSelect.disabled = false;
 			localidadSelect.disabled = false;
 			buscarInput.disabled = false;
+			buscarButton.disabled = false;
+			break;
+
+		default:
+			provinciaSelect.disabled = false;
+			departamentoSelect.disabled = false;
+			municipioSelect.disabled = false;
+			localidadSelect.disabled = false;
+			buscarInput.disabled = true;
 			buscarButton.disabled = false;
 			break;
 	}
@@ -81,9 +90,11 @@ provinciaSelect.addEventListener('change', (e) => {
 });
 
 departamentoSelect.addEventListener('change', (e) => {
-	if (e.target.value != 'completo') {
-		console.log(provinciaSelect.value);
-		getMunicipiosByIdProvincia(provinciaSelect.value).then((resp) =>
+	if (
+		(e.target.value != 'completo') &
+		(entidadSelect.value != 'departamentos')
+	) {
+		getMunicipiosByIdProvincia(e.target.value).then((resp) =>
 			loadSelect(municipioSelect, resp)
 		);
 	} else {
@@ -92,7 +103,7 @@ departamentoSelect.addEventListener('change', (e) => {
 });
 
 municipioSelect.addEventListener('change', (e) => {
-	if (e.target.value != 'completo') {
+	if ((e.target.value != 'completo') & (entidadSelect.value != 'municipios')) {
 		getLocalidades(
 			provinciaSelect.value,
 			departamentoSelect.value,
@@ -100,6 +111,88 @@ municipioSelect.addEventListener('change', (e) => {
 		).then((resp) => loadSelect(localidadSelect, resp));
 	} else {
 		loadSelect(localidadSelect, []);
+	}
+});
+
+buscarButton.addEventListener('click', (e) => {
+	document.querySelector('#ponchoTable').classList.add('state-loading');
+
+	switch (entidadSelect.value) {
+		case 'provincias':
+			const options = {
+				jsonData: getProvincias(10),
+				tituloTabla: 'tabla',
+				ordenColumna: 1,
+				ordenTipo: 'asc',
+				ocultarColumnas: [],
+				cantidadItems: 10,
+			};
+			ponchoTable(options);
+			break;
+		case 'departamentos':
+			getDepartamentosByIdProvincia(provinciaSelect.value, {
+				max: 30,
+				campos: ['id', 'nombre', 'provincia.id', 'provincia.nombre'],
+			}).then((e) => {
+				const options = {
+					jsonData: e,
+					tituloTabla: 'tabla',
+					ordenColumna: 1,
+					ordenTipo: 'asc',
+					ocultarColumnas: [],
+					cantidadItems: 10,
+				};
+				ponchoTable(options);
+			});
+			break;
+		case 'municipios':
+			getMunicipiosByIdProvincia(departamentoSelect.value, {
+				max: 10,
+				campos: ['provincia.id', 'provincia.nombre', 'id', 'nombre'],
+			}).then((e) => {
+				const options = {
+					jsonData: e,
+					tituloTabla: 'tabla',
+					ordenColumna: 1,
+					ordenTipo: 'asc',
+					ocultarColumnas: [],
+					cantidadItems: 10,
+				};
+				ponchoTable(options);
+			});
+			break;
+		case 'localidades':
+			getLocalidades(
+				provinciaSelect.value,
+				departamentoSelect.value,
+				municipioSelect.value,
+				{
+					max: 10,
+					campos: [
+						'id',
+						'nombre',
+						'provincia.id',
+						'provincia.nombre',
+						'departamento.id',
+						'departamento.nombre',
+						'municipio.id',
+						'municipio.nombre',
+					],
+				}
+			).then((e) => {
+				const options = {
+					jsonData: e,
+					tituloTabla: 'tabla',
+					ordenColumna: 1,
+					ordenTipo: 'asc',
+					ocultarColumnas: [],
+					cantidadItems: 10,
+				};
+				ponchoTable(options);
+			});
+			break;
+		default:
+			break;
 	}
 });
 

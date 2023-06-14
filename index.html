@@ -5,7 +5,8 @@
   <link rel="profile" href="http://www.w3.org/1999/xhtml/vocab" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script
+    src="https://www.argentina.gob.ar/profiles/argentinagobar/libraries/jquery.jquery-363/jquery-3.6.3.min.js?v=3.6.3"></script>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
@@ -27,8 +28,7 @@
 <body class=" p-t-3">
   <h1>Georef Landing busqueda &#127757</h1>
   <!-- INCLUDE SCRIPTS -->
-  <link href="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/css/ponchoTable-1.1.css"
-    rel="stylesheet">
+
   <script src="https://www.argentina.gob.ar/sites/default/files/ponchotable/showdown.js"></script>
   <script
     src="https://www.argentina.gob.ar/profiles/argentinagobar/themes/argentinagobar/argentinagobar_theme/js/extensiones/showdown-extensions.js"></script>
@@ -36,6 +36,8 @@
     src="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/js/datatables.min.js"></script>
   <script src="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/js/intl.min.js"></script>
   <script src="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/js/poncho.min.js"></script>
+  <link href="https://www.argentina.gob.ar/profiles/argentinagobar/themes/contrib/poncho/css/ponchoTable-1.1.css"
+    rel="stylesheet">
   <!-- / INCLUDE SCRIPTS -->
 
 
@@ -43,7 +45,7 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="col-md-6 form-group item-form">
-          <label for="entidadSelect">En</label>
+          <label for="entidadSelect">Entidad</label>
           <select class="form-control" name="entidadSelect" id="entidadSelect">
             <option value="select" selected="">Seleccioná una entidad</option>
             <option value="provincias">Provincias</option>
@@ -89,7 +91,7 @@
       </div>
     </div>
     <div class="col-md-12 form-group item-form">
-      <label for="buscar">Buscar</label>
+      <label for="buscar">Buscar calle</label>
 
       <div class="row">
         <div class="col-md-8">
@@ -102,12 +104,38 @@
 
       <p class="help-block error hidden">Ingresá una palabra para buscar</p>
     </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-8" id="ponchoTableFiltroCont" style="display:none">
+        <div class="row" id="ponchoTableFiltro"></div>
+      </div>
+      <div class="col-sm-12 col-md-4" id="ponchoTableSearchCont">
+        <div class=" form-group" style="display: none;">
+          <label for="ponchoTableSearch">Buscá por palabra clave</label>
+          <input class="form-control" id="ponchoTableSearch" type="search">
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <table class="table table-condensed table-striped" id="ponchoTable">
+        <caption></caption>
+        <thead>
+          <tr></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
 
   <!-- Georef -->
   <script src="./assets/js/georef.js"></script>
   <script src="./assets/js/formgeoref.js"></script>
   <!-- / Georef -->
+
+  <script>
+
+
+
+  </script>
 </body>
 
 </html>
