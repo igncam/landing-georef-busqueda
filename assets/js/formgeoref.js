@@ -120,7 +120,7 @@ buscarButton.addEventListener('click', (e) => {
 	switch (entidadSelect.value) {
 		case 'provincias':
 			const options = {
-				jsonData: getProvincias(10),
+				jsonData: getProvincias({ max: 10 }),
 				tituloTabla: 'tabla',
 				ordenColumna: 1,
 				ordenTipo: 'asc',
@@ -224,3 +224,5 @@ const resetSelects = (selectElements) => {
 
 	console.log('Se resetearon los selects');
 };
+
+console.log('ver:0.0.2');
