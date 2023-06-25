@@ -1,4 +1,10 @@
 const URL_API = 'https://apis.datos.gob.ar/georef/api';
+const token = TOKEN;
+const headers = {
+	headers: {
+		authorization: 'Bearer ' + token,
+	},
+};
 
 const getProvincias = (opt) => {
 	const max = opt?.max;
@@ -110,7 +116,8 @@ const getDepartamentosByIdProvincia = async (idProv, opt) => {
 	const campos = opt?.campos || ['id', 'nombre'];
 
 	const resp = await fetch(
-		`${URL_API}/departamentos?provincia=${idProv}&campos=${campos}&max=${max}&orden=nombre&aplanar=true`
+		`${URL_API}/departamentos?provincia=${idProv}&campos=${campos}&max=${max}&orden=nombre&aplanar=true`,
+		headers ?? {}
 	);
 	const jsonData = await resp.json();
 
@@ -120,22 +127,39 @@ const getDepartamentosByIdProvincia = async (idProv, opt) => {
 
 // TODO: si se envia buenos aires [] buscar por id y no interseccion y bloquar select dep
 
-const getMunicipiosByIdProvincia = async (idDep, opt) => {
+const getMunicipiosByIdDepartamento = async (idDep, opt) => {
 	const max = opt?.max || 300;
+
 	const campos = opt?.campos || ['id', 'nombre'];
 	const resp = await fetch(
-		`${URL_API}/municipios?interseccion=departamento:${idDep}&campos=${campos}&orden=nombre&max=${max}&aplanar=true`
+		`${URL_API}/municipios?interseccion=departamento:${idDep}&campos=${campos}&orden=nombre&max=${max}&aplanar=true`,
+		headers ?? {}
 	);
 	const jsonData = await resp.json();
 	return jsonData.municipios;
 };
 
+//todo: localidad censales
 const getLocalidades = async (idProv, idDep, idMun, opt) => {
 	const max = opt?.max || 300;
 	const campos = opt?.campos || ['id', 'nombre'];
 	const resp = await fetch(
-		`${URL_API}/localidades?provincia=${idProv}&departamento=${idDep}&municipio=${idMun}&campos=${campos}&orden=nombre&max=${max}&aplanar=true`
+		`${URL_API}/localidades-censales?provincia=${idProv}&departamento=${idDep}&municipio=${idMun}&campos=${campos}&orden=nombre&max=${max}&aplanar=true`,
+		headers ?? {}
 	);
 	const jsonData = await resp.json();
-	return jsonData.localidades;
+	return jsonData.localidades_censales;
+};
+
+const getCalles = async (idProv, idDep, idLoc, calle, opt) => {
+	const max = opt?.max || 300;
+	calle = calle ?? '""';
+	console.log(calle);
+	const campos = opt?.campos || ['id', 'nombre'];
+	const resp = await fetch(
+		`${URL_API}/calles?nombre=${calle}&provincia=${idProv}&departamento=${idDep}&localidad_censal=${idLoc}&aplanar=true&campos=${campos}&max=${max}`,
+		headers ?? {}
+	);
+	const jsonData = await resp.json();
+	return jsonData.calles;
 };

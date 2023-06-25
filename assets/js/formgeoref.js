@@ -94,7 +94,7 @@ departamentoSelect.addEventListener('change', (e) => {
 		(e.target.value != 'completo') &
 		(entidadSelect.value != 'departamentos')
 	) {
-		getMunicipiosByIdProvincia(e.target.value).then((resp) =>
+		getMunicipiosByIdDepartamento(e.target.value).then((resp) =>
 			loadSelect(municipioSelect, resp)
 		);
 	} else {
@@ -146,7 +146,7 @@ buscarButton.addEventListener('click', (e) => {
 			});
 			break;
 		case 'municipios':
-			getMunicipiosByIdProvincia(departamentoSelect.value, {
+			getMunicipiosByIdDepartamento(departamentoSelect.value, {
 				max: 10,
 				campos: ['provincia.id', 'provincia.nombre', 'id', 'nombre'],
 			}).then((e) => {
@@ -191,6 +191,25 @@ buscarButton.addEventListener('click', (e) => {
 				ponchoTable(options);
 			});
 			break;
+		case 'calles':
+			getCalles(
+				provinciaSelect.value,
+				departamentoSelect.value,
+				localidadSelect.value,
+				buscarInput.value,
+				{ max: 10 }
+			).then((e) => {
+				console.log(e);
+				const options = {
+					jsonData: e,
+					tituloTabla: 'tabla',
+					ordenColumna: 1,
+					ordenTipo: 'asc',
+					ocultarColumnas: [],
+					cantidadItems: 10,
+				};
+				ponchoTable(options);
+			});
 		default:
 			break;
 	}
@@ -226,3 +245,13 @@ const resetSelects = (selectElements) => {
 };
 
 console.log('ver:0.0.2');
+// const provincia = 'test';
+// console.log(
+// 	new URLSearchParams({
+// 		nombre: 21,
+// 		provincia,
+// 		departamento: 123,
+// 		localidad_censal: 'aseda',
+// 		aplanar: true,
+// 	}).toString()
+// );

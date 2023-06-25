@@ -102,8 +102,11 @@
         </div>
       </div>
 
+
+
       <p class="help-block error hidden">Ingresá una palabra para buscar</p>
     </div>
+
     <div class="row">
       <div class="col-sm-12 col-md-8" id="ponchoTableFiltroCont" style="display:none">
         <div class="row" id="ponchoTableFiltro"></div>
@@ -114,6 +117,25 @@
           <input class="form-control" id="ponchoTableSearch" type="search">
         </div>
       </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="col-md-6 form-group item-form">
+          <label for="localidadSelect">Formato</label>
+          <select class="form-control" name="localidadSelect" id="localidadSelect">
+            <option value="JSON" selected="JSON"> JSON</option>
+            <option value="CSV"> CSV</option>
+            <option value="GEOJSON"> GEOJSON</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-info btn-block" id="buscarButton"> Descargar </button>
+        </div>
+
+      </div>
+
+
     </div>
     <div class="col-md-12">
       <table class="table table-condensed table-striped" id="ponchoTable">
@@ -127,6 +149,7 @@
   </div>
 
   <!-- Georef -->
+  <script src="env.js"></script>
   <script src="./assets/js/georef.js"></script>
   <script src="./assets/js/formgeoref.js"></script>
   <!-- / Georef -->
