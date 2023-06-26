@@ -117,13 +117,16 @@ const getProvincias = (opt) => {
 const getDepartamentosByIdProvincia = async (params) => {
 	params = clearEmptyKeys(params);
 	const p = new URLSearchParams(params);
-	const resp = await fetch(
-		`${URL_API}/departamentos?${p.toString()}`,
-		headers ?? {}
-	);
-	const jsonData = await resp.json();
-
-	return { url: resp.url, data: jsonData.departamentos };
+	try {
+		const resp = await fetch(
+			`${URL_API}/departamentos?${p.toString()}`,
+			headers ?? {}
+		);
+		const jsonData = await resp.json();
+		return { url: resp.url, data: jsonData.departamentos };
+	} catch (error) {
+		throw Error('Error en la respuesta de la api');
+	}
 };
 // TODO: arreglar interseccion
 
@@ -134,42 +137,54 @@ const getMunicipiosByIdDepartamento = async (params) => {
 	idDepartamento = params.IdDep;
 	delete params['IdDep'];
 	const p = new URLSearchParams(params);
-	const resp = await fetch(
-		`${URL_API}/municipios?${p.toString()}`,
-		headers ?? {}
-	);
-	const jsonData = await resp.json();
-	if (Number(idDepartamento)) {
-		const filteredMunicipios = jsonData.municipios.filter(
-			(municipio) => municipio.id.slice(-3) === idDepartamento
-		);
-		if (filteredMunicipios.length == 0) {
-			return { url: resp.url, data: jsonData.municipios };
-		}
-		return { url: resp.url, data: filteredMunicipios };
-	}
 
-	return { url: resp.url, data: jsonData.municipios };
+	try {
+		const resp = await fetch(
+			`${URL_API}/municipios?${p.toString()}`,
+			headers ?? {}
+		);
+		const jsonData = await resp.json();
+		if (Number(idDepartamento)) {
+			const filteredMunicipios = jsonData.municipios.filter(
+				(municipio) => municipio.id.slice(-3) === idDepartamento
+			);
+			if (filteredMunicipios.length == 0) {
+				return { url: resp.url, data: jsonData.municipios };
+			}
+			return { url: resp.url, data: filteredMunicipios };
+		}
+
+		return { url: resp.url, data: jsonData.municipios };
+	} catch (error) {
+		throw Error('Error en la respuesta de la api');
+	}
 };
 
 const getLocalidades = async (params) => {
 	params = clearEmptyKeys(params);
 	const p = new URLSearchParams(params);
-
-	const resp = await fetch(
-		`${URL_API}/localidades-censales?${p}`,
-		headers ?? {}
-	);
-	const jsonData = await resp.json();
-	return { url: resp.url, data: jsonData.localidades_censales };
+	try {
+		const resp = await fetch(
+			`${URL_API}/localidades-censales?${p}`,
+			headers ?? {}
+		);
+		const jsonData = await resp.json();
+		return { url: resp.url, data: jsonData.localidades_censales };
+	} catch (error) {
+		throw Error('Error en la respuesta de la api');
+	}
 };
 
 const getCalles = async (params) => {
 	params = clearEmptyKeys(params);
 	const p = new URLSearchParams(params);
-	const resp = await fetch(`${URL_API}/calles?${p}`, headers ?? {});
-	const jsonData = await resp.json();
-	return { url: resp.url, data: jsonData.calles };
+	try {
+		const resp = await fetch(`${URL_API}/calles?${p}`, headers ?? {});
+		const jsonData = await resp.json();
+		return { url: resp.url, data: jsonData.calles };
+	} catch (error) {
+		throw Error('Error en la respuesta de la api');
+	}
 };
 
 const clearEmptyKeys = (params) => {

@@ -11,6 +11,8 @@ const buscarButton = document.querySelector('#buscarButton');
 const divDescargar = document.querySelector('#divDescargar');
 const formatoSelect = document.querySelector('#formatoSelect');
 const descargarButton = document.querySelector('#descargarButton');
+const error = document.querySelector('#error');
+const result = document.querySelector('#resultGroup');
 
 // inicio todo en disabled
 provinciaSelect.disabled = true;
@@ -162,6 +164,9 @@ buscarButton.addEventListener('click', (e) => {
 	document.querySelector('#ponchoTable').classList.add('state-loading');
 	formatoSelect.value = 'default';
 	descargarButton.href = '';
+
+	result.style.display = 'block';
+	error.style.display = 'none';
 	var params = {};
 	switch (entidadSelect.value) {
 		case 'provincias':
@@ -224,9 +229,14 @@ buscarButton.addEventListener('click', (e) => {
 					ocultarColumnas: [],
 					cantidadItems: 10,
 				};
-				divDescargar.style.display = '';
-				descargarButton.href = e.url;
-				ponchoTable(options);
+				if (!e.data.length == 0) {
+					divDescargar.style.display = '';
+					descargarButton.href = e.url;
+					ponchoTable(options);
+				} else {
+					result.style.display = 'none';
+					error.style.display = 'block';
+				}
 			});
 			break;
 		case 'localidades':
@@ -257,9 +267,14 @@ buscarButton.addEventListener('click', (e) => {
 					ocultarColumnas: [],
 					cantidadItems: 10,
 				};
-				divDescargar.style.display = '';
-				descargarButton.href = e.url;
-				ponchoTable(options);
+
+				if (!e.data.length == 0) {
+					divDescargar.style.display = '';
+					descargarButton.href = e.url;
+					ponchoTable(options);
+				} else {
+					error.style.display = 'block';
+				}
 			});
 			break;
 		case 'calles':
