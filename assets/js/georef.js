@@ -108,7 +108,10 @@ const getProvincias = (opt) => {
 		},
 	];
 
-	return provincias.slice(0, max ?? provincias.length);
+	return {
+		url: 'https://apis.datos.gob.ar/georef/api/provincias?aplanar=true&campos=estandar&max=30&exacto=true',
+		data: provincias.slice(0, max ?? provincias.length),
+	};
 };
 
 const getDepartamentosByIdProvincia = async (params) => {
@@ -129,7 +132,6 @@ const getDepartamentosByIdProvincia = async (params) => {
 const getMunicipiosByIdDepartamento = async (params) => {
 	params = clearEmptyKeys(params);
 	idDepartamento = params.IdDep;
-	console.log(idDepartamento);
 	delete params['IdDep'];
 	const p = new URLSearchParams(params);
 	const resp = await fetch(
@@ -138,7 +140,6 @@ const getMunicipiosByIdDepartamento = async (params) => {
 	);
 	const jsonData = await resp.json();
 	if (Number(idDepartamento)) {
-		console.log('entroooo');
 		const filteredMunicipios = jsonData.municipios.filter(
 			(municipio) => municipio.id.slice(-3) === idDepartamento
 		);

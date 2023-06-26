@@ -21,7 +21,7 @@ buscarInput.disabled = true;
 buscarButton.disabled = true;
 
 entidadSelect.addEventListener('change', (e) => {
-	loadSelect(provinciaSelect, getProvincias());
+	loadSelect(provinciaSelect, getProvincias({ max: 30 }).data);
 	formatoSelect.value = 'default';
 	descargarButton.href = '';
 	resetSelects([municipioSelect, departamentoSelect, localidadSelect]);
@@ -166,14 +166,15 @@ buscarButton.addEventListener('click', (e) => {
 	switch (entidadSelect.value) {
 		case 'provincias':
 			const options = {
-				jsonData: getProvincias({ max: 10 }),
+				jsonData: getProvincias({ max: 30 }).data,
 				tituloTabla: 'tabla',
 				ordenColumna: 1,
 				ordenTipo: 'asc',
 				ocultarColumnas: [],
 				cantidadItems: 10,
 			};
-
+			divDescargar.style.display = '';
+			descargarButton.href = getProvincias({ max: 30 }).url;
 			ponchoTable(options);
 			break;
 		case 'departamentos':
@@ -200,6 +201,7 @@ buscarButton.addEventListener('click', (e) => {
 			break;
 		case 'municipios':
 			params = {
+				provincia: provinciaSelect.value,
 				interseccion: `departamento: ${departamentoSelect.value}`,
 				IdDep: departamentoSelect.value.substring(
 					departamentoSelect.value.length - 3
