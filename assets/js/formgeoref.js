@@ -335,4 +335,4 @@ const resetSelects = (selectElements) => {
 	console.log('Se resetearon los selects');
 };
 
-console.log('ver:0.1.0');
+console.log('ver:0.1.1');
