@@ -25,6 +25,8 @@ buscarButton.disabled = true;
 entidadSelect.addEventListener('change', (e) => {
 	loadSelect(provinciaSelect, getProvincias({ max: 30 }).data);
 	formatoSelect.value = 'default';
+	result.style.display = 'none';
+
 	descargarButton.href = '';
 	resetSelects([municipioSelect, departamentoSelect, localidadSelect]);
 	switch (e.target.value) {
@@ -87,6 +89,7 @@ entidadSelect.addEventListener('change', (e) => {
 provinciaSelect.addEventListener('change', (e) => {
 	// si es completo no ejecuto la llamda a la api
 	resetSelects([municipioSelect, departamentoSelect, localidadSelect]);
+	result.style.display = 'none';
 
 	if (e.target.value != 'completo') {
 		const params = {
@@ -105,6 +108,8 @@ provinciaSelect.addEventListener('change', (e) => {
 });
 
 departamentoSelect.addEventListener('change', (e) => {
+	result.style.display = 'none';
+
 	if (
 		(e.target.value != 'completo') &
 		(entidadSelect.value != 'departamentos')
@@ -133,6 +138,8 @@ departamentoSelect.addEventListener('change', (e) => {
 });
 
 municipioSelect.addEventListener('change', (e) => {
+	result.style.display = 'none';
+
 	const params = {
 		provincia: provinciaSelect.value,
 		departamento: departamentoSelect.value,
@@ -335,4 +342,4 @@ const resetSelects = (selectElements) => {
 	console.log('Se resetearon los selects');
 };
 
-console.log('ver:0.1.1');
+console.log('ver:0.1.2');
