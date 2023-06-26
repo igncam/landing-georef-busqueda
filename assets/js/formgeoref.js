@@ -4,9 +4,13 @@ const entidadSelect = document.querySelector('#entidadSelect');
 const provinciaSelect = document.querySelector('#provinciaSelect');
 const municipioSelect = document.querySelector('#municipioSelect');
 const departamentoSelect = document.querySelector('#departamentoSelect');
+
 const localidadSelect = document.querySelector('#localidadSelect');
 const buscarInput = document.querySelector('#buscarInput');
 const buscarButton = document.querySelector('#buscarButton');
+const divDescargar = document.querySelector('#divDescargar');
+const formatoSelect = document.querySelector('#formatoSelect');
+const descargarButton = document.querySelector('#descargarButton');
 
 // inicio todo en disabled
 provinciaSelect.disabled = true;
@@ -18,6 +22,8 @@ buscarButton.disabled = true;
 
 entidadSelect.addEventListener('change', (e) => {
 	loadSelect(provinciaSelect, getProvincias());
+	formatoSelect.value = 'default';
+	descargarButton.href = '';
 	resetSelects([municipioSelect, departamentoSelect, localidadSelect]);
 	switch (e.target.value) {
 		case 'provincias':
@@ -81,8 +87,15 @@ provinciaSelect.addEventListener('change', (e) => {
 	resetSelects([municipioSelect, departamentoSelect, localidadSelect]);
 
 	if (e.target.value != 'completo') {
-		getDepartamentosByIdProvincia(e.target.value).then((resp) =>
-			loadSelect(departamentoSelect, resp)
+		const params = {
+			provincia: provinciaSelect.value,
+			campos: ['id', 'nombre', 'provincia.id', 'provincia.nombre'],
+			max: 300,
+			orden: 'nombre',
+			aplanar: true,
+		};
+		getDepartamentosByIdProvincia(params).then((resp) =>
+			loadSelect(departamentoSelect, resp.data)
 		);
 	} else {
 		loadSelect(departamentoSelect, []);
@@ -94,8 +107,23 @@ departamentoSelect.addEventListener('change', (e) => {
 		(e.target.value != 'completo') &
 		(entidadSelect.value != 'departamentos')
 	) {
-		getMunicipiosByIdDepartamento(e.target.value).then((resp) =>
-			loadSelect(municipioSelect, resp)
+		var params = {
+			interseccion: `departamento: ${e.target.value}`,
+			campos: ['id', 'nombre'],
+			max: 300,
+			orden: 'nombre',
+			aplanar: true,
+			IdDep: departamentoSelect.value.substring(
+				departamentoSelect.value.length - 3
+			),
+		};
+
+		if (e.target.value === 'completo') {
+			delete params[interseccion];
+		}
+
+		getMunicipiosByIdDepartamento(params).then((resp) =>
+			loadSelect(municipioSelect, resp.data)
 		);
 	} else {
 		loadSelect(municipioSelect, []);
@@ -103,20 +131,36 @@ departamentoSelect.addEventListener('change', (e) => {
 });
 
 municipioSelect.addEventListener('change', (e) => {
+	const params = {
+		provincia: provinciaSelect.value,
+		departamento: departamentoSelect.value,
+		municipio: municipioSelect.value,
+		campos: ['id', 'nombre'],
+		max: 300,
+		orden: 'nombre',
+		aplanar: true,
+	};
 	if ((e.target.value != 'completo') & (entidadSelect.value != 'municipios')) {
-		getLocalidades(
-			provinciaSelect.value,
-			departamentoSelect.value,
-			e.target.value
-		).then((resp) => loadSelect(localidadSelect, resp));
+		getLocalidades(params).then((resp) => loadSelect(localidadSelect, resp));
 	} else {
 		loadSelect(localidadSelect, []);
 	}
 });
-
+formatoSelect.addEventListener('change', (e) => {
+	const parsedUrl = new URL(descargarButton.href);
+	const searchParams = parsedUrl.searchParams;
+	searchParams.delete('formato');
+	searchParams.delete('campos');
+	searchParams.delete('aplanar');
+	searchParams.delete('max');
+	console.log(parsedUrl.toString());
+	descargarButton.href = `${parsedUrl}&formato=${formatoSelect.value}&max=5000`;
+});
 buscarButton.addEventListener('click', (e) => {
 	document.querySelector('#ponchoTable').classList.add('state-loading');
-
+	formatoSelect.value = 'default';
+	descargarButton.href = '';
+	var params = {};
 	switch (entidadSelect.value) {
 		case 'provincias':
 			const options = {
@@ -127,59 +171,80 @@ buscarButton.addEventListener('click', (e) => {
 				ocultarColumnas: [],
 				cantidadItems: 10,
 			};
+
 			ponchoTable(options);
 			break;
 		case 'departamentos':
-			getDepartamentosByIdProvincia(provinciaSelect.value, {
-				max: 30,
+			params = {
+				provincia: provinciaSelect.value,
 				campos: ['id', 'nombre', 'provincia.id', 'provincia.nombre'],
-			}).then((e) => {
+				max: 30,
+				orden: 'nombre',
+				aplanar: true,
+			};
+			getDepartamentosByIdProvincia(params).then((e) => {
 				const options = {
-					jsonData: e,
+					jsonData: e.data,
 					tituloTabla: 'tabla',
 					ordenColumna: 1,
 					ordenTipo: 'asc',
 					ocultarColumnas: [],
 					cantidadItems: 10,
 				};
+				divDescargar.style.display = '';
+				descargarButton.href = e.url;
 				ponchoTable(options);
 			});
 			break;
 		case 'municipios':
-			getMunicipiosByIdDepartamento(departamentoSelect.value, {
+			params = {
+				interseccion: `departamento: ${departamentoSelect.value}`,
+				IdDep: departamentoSelect.value.substring(
+					departamentoSelect.value.length - 3
+				),
+				campos: ['id', 'nombre', 'provincia.id', 'provincia.nombre'],
 				max: 10,
-				campos: ['provincia.id', 'provincia.nombre', 'id', 'nombre'],
-			}).then((e) => {
+				orden: 'nombre',
+				aplanar: true,
+			};
+
+			if (departamentoSelect.value === 'completo') {
+				delete params['interseccion'];
+			}
+			getMunicipiosByIdDepartamento(params).then((e) => {
 				const options = {
-					jsonData: e,
+					jsonData: e.data,
 					tituloTabla: 'tabla',
 					ordenColumna: 1,
 					ordenTipo: 'asc',
 					ocultarColumnas: [],
 					cantidadItems: 10,
 				};
+				divDescargar.style.display = '';
+				descargarButton.href = e.url;
 				ponchoTable(options);
 			});
 			break;
 		case 'localidades':
-			getLocalidades(
-				provinciaSelect.value,
-				departamentoSelect.value,
-				municipioSelect.value,
-				{
-					max: 10,
-					campos: [
-						'id',
-						'nombre',
-						'provincia.id',
-						'provincia.nombre',
-						'departamento.id',
-						'departamento.nombre',
-						'municipio.id',
-						'municipio.nombre',
-					],
-				}
-			).then((e) => {
+			params = {
+				provincia: provinciaSelect.value,
+				departamento: departamentoSelect.value,
+				municipio: municipioSelect.value,
+				campos: [
+					'id',
+					'nombre',
+					'provincia.id',
+					'provincia.nombre',
+					'departamento.id',
+					'departamento.nombre',
+					'municipio.id',
+					'municipio.nombre',
+				],
+				max: 300,
+				orden: 'nombre',
+				aplanar: true,
+			};
+			getLocalidades(params).then((e) => {
 				const options = {
 					jsonData: e,
 					tituloTabla: 'tabla',
@@ -192,14 +257,17 @@ buscarButton.addEventListener('click', (e) => {
 			});
 			break;
 		case 'calles':
-			getCalles(
-				provinciaSelect.value,
-				departamentoSelect.value,
-				localidadSelect.value,
-				buscarInput.value,
-				{ max: 10 }
-			).then((e) => {
-				console.log(e);
+			params = {
+				provincia: provinciaSelect.value,
+				departamento: departamentoSelect.value,
+				localidad_censal: localidadSelect.value,
+				nombre: buscarInput.value,
+				campos: ['id', 'nombre', 'provincia.nombre'],
+				max: 10,
+				orden: 'nombre',
+				aplanar: true,
+			};
+			getCalles(params).then((e) => {
 				const options = {
 					jsonData: e,
 					tituloTabla: 'tabla',

@@ -111,55 +111,70 @@ const getProvincias = (opt) => {
 	return provincias.slice(0, max ?? provincias.length);
 };
 
-const getDepartamentosByIdProvincia = async (idProv, opt) => {
-	const max = opt?.max || 200;
-	const campos = opt?.campos || ['id', 'nombre'];
-
+const getDepartamentosByIdProvincia = async (params) => {
+	params = clearEmptyKeys(params);
+	const p = new URLSearchParams(params);
 	const resp = await fetch(
-		`${URL_API}/departamentos?provincia=${idProv}&campos=${campos}&max=${max}&orden=nombre&aplanar=true`,
+		`${URL_API}/departamentos?${p.toString()}`,
 		headers ?? {}
 	);
 	const jsonData = await resp.json();
 
-	return jsonData.departamentos;
+	return { url: resp.url, data: jsonData.departamentos };
 };
 // TODO: arreglar interseccion
 
 // TODO: si se envia buenos aires [] buscar por id y no interseccion y bloquar select dep
 
-const getMunicipiosByIdDepartamento = async (idDep, opt) => {
-	const max = opt?.max || 300;
-
-	const campos = opt?.campos || ['id', 'nombre'];
+const getMunicipiosByIdDepartamento = async (params) => {
+	params = clearEmptyKeys(params);
+	idDepartamento = params.IdDep;
+	console.log(idDepartamento);
+	delete params['IdDep'];
+	const p = new URLSearchParams(params);
 	const resp = await fetch(
-		`${URL_API}/municipios?interseccion=departamento:${idDep}&campos=${campos}&orden=nombre&max=${max}&aplanar=true`,
+		`${URL_API}/municipios?${p.toString()}`,
 		headers ?? {}
 	);
 	const jsonData = await resp.json();
-	return jsonData.municipios;
+	if (Number(idDepartamento)) {
+		console.log('entroooo');
+		const filteredMunicipios = jsonData.municipios.filter(
+			(municipio) => municipio.id.slice(-3) === idDepartamento
+		);
+		console.log(idDepartamento);
+		console.log(filteredMunicipios);
+		return { url: resp.url, data: filteredMunicipios };
+	}
+
+	return { url: resp.url, data: jsonData.municipios };
 };
 
-//todo: localidad censales
-const getLocalidades = async (idProv, idDep, idMun, opt) => {
-	const max = opt?.max || 300;
-	const campos = opt?.campos || ['id', 'nombre'];
+const getLocalidades = async (params) => {
+	params = clearEmptyKeys(params);
+	const p = new URLSearchParams(params);
+
 	const resp = await fetch(
-		`${URL_API}/localidades-censales?provincia=${idProv}&departamento=${idDep}&municipio=${idMun}&campos=${campos}&orden=nombre&max=${max}&aplanar=true`,
+		`${URL_API}/localidades-censales?${p}`,
 		headers ?? {}
 	);
 	const jsonData = await resp.json();
 	return jsonData.localidades_censales;
 };
 
-const getCalles = async (idProv, idDep, idLoc, calle, opt) => {
-	const max = opt?.max || 300;
-	calle = calle ?? '""';
-	console.log(calle);
-	const campos = opt?.campos || ['id', 'nombre'];
-	const resp = await fetch(
-		`${URL_API}/calles?nombre=${calle}&provincia=${idProv}&departamento=${idDep}&localidad_censal=${idLoc}&aplanar=true&campos=${campos}&max=${max}`,
-		headers ?? {}
-	);
+const getCalles = async (params) => {
+	params = clearEmptyKeys(params);
+	const p = new URLSearchParams(params);
+	const resp = await fetch(`${URL_API}/calles?${p}`, headers ?? {});
 	const jsonData = await resp.json();
 	return jsonData.calles;
+};
+
+const clearEmptyKeys = (params) => {
+	for (var key in params) {
+		if (params[key] === 'completo' || params[key] === '') {
+			delete params[key];
+		}
+	}
+	return params;
 };

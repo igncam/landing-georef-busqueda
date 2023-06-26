@@ -119,24 +119,7 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="col-md-6 form-group item-form">
-          <label for="localidadSelect">Formato</label>
-          <select class="form-control" name="localidadSelect" id="localidadSelect">
-            <option value="JSON" selected="JSON"> JSON</option>
-            <option value="CSV"> CSV</option>
-            <option value="GEOJSON"> GEOJSON</option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <button class="btn btn-info btn-block" id="buscarButton"> Descargar </button>
-        </div>
 
-      </div>
-
-
-    </div>
     <div class="col-md-12">
       <table class="table table-condensed table-striped" id="ponchoTable">
         <caption></caption>
@@ -146,6 +129,47 @@
         <tbody></tbody>
       </table>
     </div>
+    <div id="divDescargar" class="row" style="display:none">
+      <div class="col-md-4">
+        <label for="formatoSelect">Formato</label>
+        <select class="form-control" name="formatoSelect" id="formatoSelect">
+          <option value="default" selected="">Selecione un formato</option>
+          <option value="json"> JSON</option>
+          <option value="csv"> CSV</option>
+          <option value="geojson"> GEOJSON</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <a class="form-group btn btn-primary btn-block" style="margin-top: 30px;" id="descargarButton" target="_blank"
+          href="">
+          Descargar
+        </a>
+      </div>
+    </div>
+
+
+
+
+
+    <p class="help-block error hidden">Ingresá una palabra para buscar</p>
+  </div>
+
+  <!-- <div class="row">
+      <div class="col-md-6 d-flex align-items-center">
+        <label for="localidadSelect">Formato</label>
+        <select class="form-control" name="localidadSelect" id="localidadSelect">
+          <option value="JSON" selected="JSON"> JSON</option>
+          <option value="CSV"> CSV</option>
+          <option value="GEOJSON"> GEOJSON</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-center">
+        <button class="btn btn-info btn-block" id="buscarButton"> Descargar </button>
+      </div>
+    </div> -->
+
+
+
   </div>
 
   <!-- Georef -->
