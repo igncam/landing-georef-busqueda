@@ -142,8 +142,9 @@ const getMunicipiosByIdDepartamento = async (params) => {
 		const filteredMunicipios = jsonData.municipios.filter(
 			(municipio) => municipio.id.slice(-3) === idDepartamento
 		);
-		console.log(idDepartamento);
-		console.log(filteredMunicipios);
+		if (filteredMunicipios.length == 0) {
+			return { url: resp.url, data: jsonData.municipios };
+		}
 		return { url: resp.url, data: filteredMunicipios };
 	}
 
