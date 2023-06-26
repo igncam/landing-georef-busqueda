@@ -206,9 +206,15 @@ buscarButton.addEventListener('click', (e) => {
 					ocultarColumnas: [],
 					cantidadItems: 10,
 				};
-				divDescargar.style.display = '';
-				descargarButton.href = e.url;
-				ponchoTable(options);
+
+				if (!e.data.length == 0) {
+					divDescargar.style.display = '';
+					descargarButton.href = e.url;
+					ponchoTable(options);
+				} else {
+					result.style.display = 'none';
+					error.style.display = 'block';
+				}
 			});
 			break;
 		case 'municipios':
@@ -280,6 +286,7 @@ buscarButton.addEventListener('click', (e) => {
 					descargarButton.href = e.url;
 					ponchoTable(options);
 				} else {
+					result.style.display = 'none';
 					error.style.display = 'block';
 				}
 			});
@@ -304,9 +311,15 @@ buscarButton.addEventListener('click', (e) => {
 					ocultarColumnas: [],
 					cantidadItems: 10,
 				};
-				divDescargar.style.display = '';
-				descargarButton.href = e.url;
-				ponchoTable(options);
+
+				if (!e.data.length == 0) {
+					divDescargar.style.display = '';
+					descargarButton.href = e.url;
+					ponchoTable(options);
+				} else {
+					result.style.display = 'none';
+					error.style.display = 'block';
+				}
 			});
 		default:
 			break;
