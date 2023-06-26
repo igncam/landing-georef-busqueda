@@ -141,7 +141,9 @@ municipioSelect.addEventListener('change', (e) => {
 		aplanar: true,
 	};
 	if ((e.target.value != 'completo') & (entidadSelect.value != 'municipios')) {
-		getLocalidades(params).then((resp) => loadSelect(localidadSelect, resp));
+		getLocalidades(params).then((resp) =>
+			loadSelect(localidadSelect, resp.data)
+		);
 	} else {
 		loadSelect(localidadSelect, []);
 	}
@@ -246,13 +248,15 @@ buscarButton.addEventListener('click', (e) => {
 			};
 			getLocalidades(params).then((e) => {
 				const options = {
-					jsonData: e,
+					jsonData: e.data,
 					tituloTabla: 'tabla',
 					ordenColumna: 1,
 					ordenTipo: 'asc',
 					ocultarColumnas: [],
 					cantidadItems: 10,
 				};
+				divDescargar.style.display = '';
+				descargarButton.href = e.url;
 				ponchoTable(options);
 			});
 			break;
@@ -269,13 +273,15 @@ buscarButton.addEventListener('click', (e) => {
 			};
 			getCalles(params).then((e) => {
 				const options = {
-					jsonData: e,
+					jsonData: e.data,
 					tituloTabla: 'tabla',
 					ordenColumna: 1,
 					ordenTipo: 'asc',
 					ocultarColumnas: [],
 					cantidadItems: 10,
 				};
+				divDescargar.style.display = '';
+				descargarButton.href = e.url;
 				ponchoTable(options);
 			});
 		default:
@@ -312,14 +318,4 @@ const resetSelects = (selectElements) => {
 	console.log('Se resetearon los selects');
 };
 
-console.log('ver:0.0.2');
-// const provincia = 'test';
-// console.log(
-// 	new URLSearchParams({
-// 		nombre: 21,
-// 		provincia,
-// 		departamento: 123,
-// 		localidad_censal: 'aseda',
-// 		aplanar: true,
-// 	}).toString()
-// );
+console.log('ver:0.1.0');

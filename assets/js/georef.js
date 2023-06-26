@@ -159,7 +159,7 @@ const getLocalidades = async (params) => {
 		headers ?? {}
 	);
 	const jsonData = await resp.json();
-	return jsonData.localidades_censales;
+	return { url: resp.url, data: jsonData.localidades_censales };
 };
 
 const getCalles = async (params) => {
@@ -167,7 +167,7 @@ const getCalles = async (params) => {
 	const p = new URLSearchParams(params);
 	const resp = await fetch(`${URL_API}/calles?${p}`, headers ?? {});
 	const jsonData = await resp.json();
-	return jsonData.calles;
+	return { url: resp.url, data: jsonData.calles };
 };
 
 const clearEmptyKeys = (params) => {
