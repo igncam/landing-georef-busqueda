@@ -1,5 +1,5 @@
 const URL_API = 'https://apis.datos.gob.ar/georef/api';
-const token = TOKEN || '';
+//const token = TOKEN || '';
 const headers = {
 	headers: {
 		// authorization: 'Bearer ' + token,
