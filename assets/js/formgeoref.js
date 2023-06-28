@@ -178,7 +178,7 @@ buscarButton.addEventListener('click', (e) => {
 	switch (entidadSelect.value) {
 		case 'provincias':
 			const options = {
-				jsonData: getProvincias({ max: 30 }).data,
+				jsonData: getProvincias({ max: 10 }).data,
 				tituloTabla: 'tabla',
 				ordenColumna: 1,
 				ordenTipo: 'asc',
@@ -186,14 +186,14 @@ buscarButton.addEventListener('click', (e) => {
 				cantidadItems: 10,
 			};
 			divDescargar.style.display = '';
-			descargarButton.href = getProvincias({ max: 30 }).url;
+			descargarButton.href = getProvincias({ max: 10 }).url;
 			ponchoTable(options);
 			break;
 		case 'departamentos':
 			params = {
 				provincia: provinciaSelect.value,
 				campos: ['id', 'nombre', 'provincia.id', 'provincia.nombre'],
-				max: 30,
+				max: 10,
 				orden: 'nombre',
 				aplanar: true,
 			};
@@ -355,4 +355,4 @@ const resetSelects = (selectElements) => {
 	console.log('Se resetearon los selects');
 };
 
-console.log('ver:0.1.2');
+console.log('ver:0.1.3');
